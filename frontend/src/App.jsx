@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "@/context/AuthContext";
 import { CallProvider } from "@/context/CallContext";
 import ProtectedRoute from "@/components/ProtectedRoute";
-import Layout from "@/components/Layout";
 
 import Login from "@/pages/Login";
 import Dashboard from "@/pages/agent/Dashboard";
@@ -13,6 +12,7 @@ import ActiveCalls from "@/pages/agent/ActiveCalls";
 import Performance from "@/pages/agent/Performance";
 import KnowledgeBase from "@/pages/agent/KnowledgeBase";
 import OperationalTools from "@/pages/agent/OperationalTools";
+import Layout from "@/pages/agent/Layout";
 import AdminLayout from "@/pages/admin/Layout";
 import AdminOverview from "@/pages/admin/Overview";
 import AdminReports from "@/pages/admin/Reports";

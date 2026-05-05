@@ -78,17 +78,17 @@ export const BOTTOM_NAV_ITEMS = [
 
 /* ─── SUPERVISOR ─── */
 export const SUPERVISOR_NAV_ITEMS = [
-  { label: "Genel Bakış",      to: "/supervisor",             icon: LayoutDashboard, roles: ["supervizor", "admin"], group: "main" },
-  { label: "Ekip İzleme",      to: "/supervisor/team",        icon: Users,           roles: ["supervizor", "admin"], group: "main" },
-  { label: "Onay Merkezi",     to: "/supervisor/approvals",   icon: Inbox,           roles: ["supervizor", "admin"], group: "main" },
-  { label: "Vardiya Yönetimi", to: "/supervisor/shifts",      icon: CalendarDays,    roles: ["supervizor", "admin"], group: "main" },
-  { label: "Mola Yönetimi",    to: "/supervisor/breaks",      icon: Coffee,          roles: ["supervizor", "admin"], group: "main" },
-  { label: "Gamification",     to: "/supervisor/gamification",icon: Trophy,          roles: ["supervizor", "admin"], group: "main" },
-  { label: "Raporlar",         to: "/supervisor/reports",     icon: BarChart3,       roles: ["supervizor", "admin"], group: "main" },
+  { label: "Genel Bakış",      to: "/supervisor",             icon: LayoutDashboard, roles: ["supervisor", "admin"], group: "main" },
+  { label: "Ekip İzleme",      to: "/supervisor/team",        icon: Users,           roles: ["supervisor", "admin"], group: "main" },
+  { label: "Onay Merkezi",     to: "/supervisor/approvals",   icon: Inbox,           roles: ["supervisor", "admin"], group: "main" },
+  { label: "Vardiya Yönetimi", to: "/supervisor/shifts",      icon: CalendarDays,    roles: ["supervisor", "admin"], group: "main" },
+  { label: "Mola Yönetimi",    to: "/supervisor/breaks",      icon: Coffee,          roles: ["supervisor", "admin"], group: "main" },
+  { label: "Gamification",     to: "/supervisor/gamification",icon: Trophy,          roles: ["supervisor", "admin"], group: "main" },
+  { label: "Raporlar",         to: "/supervisor/reports",     icon: BarChart3,       roles: ["supervisor", "admin"], group: "main" },
 ];
 
 export const SUPERVISOR_BOTTOM_NAV_ITEMS = [
-  { label: "Ayarlar", to: "/supervisor/settings", icon: Settings, roles: ["supervizor", "admin"] },
+  { label: "Ayarlar", to: "/supervisor/settings", icon: Settings, roles: ["supervisor", "admin"] },
 ];
 
 /* ─── ADMIN ─── */
@@ -103,10 +103,9 @@ export const ADMIN_BOTTOM_NAV_ITEMS = [];
 function normalizeRole(role) {
   const clean = String(role || "").trim().toLowerCase();
   const aliasMap = {
-    staff: "personel",
-    agent: "personel",
+    staff:     "personel",
+    agent:     "personel",
     personnel: "personel",
-    supervisor: "supervizor",
   };
   return aliasMap[clean] || clean;
 }
