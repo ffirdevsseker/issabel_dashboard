@@ -22,13 +22,18 @@ export default function ProtectedRoute({
   }
 
   if (requireAdmin && user.role !== "admin") {
-    // Yetkisiz kullanıcı ana dashboard'a geri gitsin
+    if (user.role === "supervisor") return <Navigate to="/supervisor" replace />;
     return <Navigate to="/" replace />;
   }
 
-  if (requireSupervisor && !["admin", "supervizor"].includes(user.role)) {
-    // Yetkisiz personel ana dashboard'a geri gitsin
+  if (requireSupervisor && !["admin", "supervisor"].includes(user.role)) {
     return <Navigate to="/" replace />;
+  }
+
+  // Agent-only rotası: admin ve supervisor kendi panellerine yönlendirilsin
+  if (!requireAdmin && !requireSupervisor) {
+    if (user.role === "admin") return <Navigate to="/admin" replace />;
+    if (user.role === "supervisor") return <Navigate to="/supervisor" replace />;
   }
 
   return children;
