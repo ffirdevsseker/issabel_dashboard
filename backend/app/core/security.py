@@ -21,11 +21,19 @@ def hash_password(password: str) -> str:
     return pwd_context.hash(password)
 
 
-def create_access_token(subject: str, role: str, extension: Optional[str] = None) -> str:
+def create_access_token(
+    user_id: str,
+    username: str,
+    role: str,
+    extension: Optional[str] = None,
+) -> str:
     """JWT access token üretir. subject = username"""
     expire = datetime.now(timezone.utc) + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     payload = {
-        "sub": subject,
+        "sub": username,
+        "user_id": str(user_id),
+        "kullanici_adi": username,
+        "rol": role,
         "role": role,
         "extension": extension,
         "exp": expire,

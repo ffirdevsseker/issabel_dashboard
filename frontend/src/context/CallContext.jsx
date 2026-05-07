@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 const CallContext = createContext(null);
 
@@ -10,6 +11,7 @@ const TEST_SCENARIOS = [
 ];
 
 export function CallProvider({ children }) {
+  const { user, token, loading } = useAuth();
   const [incomingAlert,  setIncomingAlert]  = useState(null);
   const [incomingElapsed, setIncomingElapsed] = useState(0);
   // set by signalAnswer(); consumed (once) by ActiveCalls on mount/change
@@ -53,19 +55,34 @@ export function CallProvider({ children }) {
   const [recentCalls, setRecentCalls] = useState([]);
 
   useEffect(() => {
-    import("../services/api").then(({ cdrApi }) => {
-      cdrApi.getRecent(10).then(res => {
+    if (loading || !token || !user) {
+      setRecentCalls([]);
+      return;
+    }
+
+    let cancelled = false;
+
+    import("../services/api")
+      .then(({ cdrApi }) => cdrApi.getRecent(10))
+      .then((res) => {
+        if (cancelled) return;
         const calls = (res.data || []).map((c, i) => ({
           id: c.uniqueid || i,
           number: c.src,
           name: "Bilinmeyen",
           at: new Date(c.calldate).toLocaleTimeString("tr-TR", { hour: "2-digit", minute: "2-digit" }),
-          dir: "in"
+          dir: "in",
         }));
         setRecentCalls(calls);
-      }).catch(console.error);
-    });
-  }, []);
+      })
+      .catch((err) => {
+        if (!cancelled) console.error(err);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [loading, token, user]);
 
   // ── timer while ringing ──
   useEffect(() => {

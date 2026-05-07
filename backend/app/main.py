@@ -1,7 +1,10 @@
+import logging
+
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.api import api_router
+from app.db.health import check_db_connection
 from app.db.session import engine, Base
 import app.models  # noqa: F401 — tüm modelleri yükle, create_all için gerekli
 
@@ -10,9 +13,19 @@ app = FastAPI(
     version="0.1.0",
 )
 
+logger = logging.getLogger(__name__)
+
 @app.on_event("startup")
 def on_startup():
-    Base.metadata.create_all(bind=engine)
+    try:
+        Base.metadata.create_all(bind=engine)
+    except Exception as exc:
+        logger.warning("Database create_all failed", exc_info=exc)
+
+
+@app.on_event("startup")
+async def on_startup_db_check():
+    await check_db_connection(raise_on_fail=False)
 
 app.add_middleware(
     CORSMiddleware,

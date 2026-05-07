@@ -5,7 +5,7 @@ from sqlalchemy.sql import func
 
 from app.db.session import Base
 
-ROLE_MAP = {1: "admin", 2: "supervisor", 3: "personel"}
+ROLE_MAP = {1: "admin", 2: "supervisor", 3: "personel", 4: "bt"}
 
 
 class User(Base):
@@ -13,7 +13,8 @@ class User(Base):
 
     id             = Column(PGUUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     rol_id         = Column(Integer, nullable=False, default=3)
-    ekip_id        = Column(PGUUID(as_uuid=True), nullable=True)
+    departman_id   = Column(PGUUID(as_uuid=True), ForeignKey("departmanlar.id"), nullable=True)
+    ekip_id        = Column(PGUUID(as_uuid=True), ForeignKey("ekipler.id"), nullable=True)
     ad_soyad       = Column(String(128), default="")
     kullanici_adi  = Column(String(64), unique=True, nullable=False, index=True)
     sifre_hash     = Column(String(255), nullable=False)
@@ -22,8 +23,10 @@ class User(Base):
     seviye         = Column(Integer, default=1)
     unvan          = Column(String(64), default="Bronz")
     anlik_durum    = Column(String(32), default="offline")
-    vardiya_baslangic = Column(String(10), nullable=True)
-    vardiya_bitis     = Column(String(10), nullable=True)
+    sip_durumu     = Column(String(32), nullable=True)
+    son_sip_guncelleme = Column(DateTime, nullable=True)
+    sip_cihaz_bilgisi = Column(String(200), nullable=True)
+    varsayilan_kuyruk_id = Column(PGUUID(as_uuid=True), nullable=True)
     silindi_mi     = Column(Boolean, default=False)
     olusturma_tarihi = Column(DateTime, server_default=func.now())
 
